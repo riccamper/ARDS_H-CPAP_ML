@@ -50,6 +50,8 @@ Rate, eGFR, Creatinine, and D-Dimer, in accordance with the medical scientific l
 | /datasets/         | folder containing the dataset "dataset_vimercate.csv" used to train the models |
 | /images/           | folder containing the obtained images                                          |
 
+<br>
+
 ## Statements of ethical approval
 Our study was approved by the local institution, Vimercate Hospital, ASST Brianza, according to the legal requirements concerning observational studies (Resolution 0000573 27/7/21, Resolution 0000133 22/02/2023).
 The release of the associated dataset received a favorable opinion from the ASST Brianza Ethic Committee.
