@@ -52,6 +52,8 @@ Rate, eGFR, Creatinine, and D-Dimer, in accordance with the medical scientific l
 
 <br>
 
-## Statements of ethical approval
-Our study was approved by the local institution, Vimercate Hospital, ASST Brianza, according to the legal requirements concerning observational studies (Resolution 0000573 27/7/21, Resolution 0000133 22/02/2023).
-The release of the associated dataset received a favorable opinion from the ASST Brianza Ethic Committee.
+## Institutional Review Board Statement
+Human participants were involved in this research; the study was conducted in accordance with the Declaration of Helsinki. Our study was approved by the local institution, Vimercate Hospital, ASST-Brianza, according to the legal requirements concerning observational studies (Resolutions 0000573 27/7/21 and 0000133 22/02/2023).
+
+## Informed Consent Statement
+Due to the nature of the present observational study and data anonymization, the patients' consent to participate was not required, as declared by the ASST Brianza Ethics Committee.
