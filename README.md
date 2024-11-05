@@ -47,7 +47,7 @@ The SVM and Fully-Connected Neural-Network models proved to be the most effectiv
 <br>
 
 ## Institutional Review Board Statement
-Human participants were involved in this research; the study was conducted in accordance with the Declaration of Helsinki. Our study was approved by the local institution, Vimercate Hospital, ASST-Brianza, according to the legal requirements concerning observational studies (Resolutions 0000573 27/7/21 and 0000133 22/02/2023).
+Human participants were involved in this research; the study was conducted in accordance with the Declaration of Helsinki. Our study was approved by the local institution, Vimercate Hospital, ASST-Brianza, according to the legal requirements concerning observational studies (Resolutions 0000573 27/07/2021 and 0000133 22/02/2023).
 
 ## Informed Consent Statement
 Due to the nature of the present observational study and data anonymization, the patients' consent to participate was not required, as declared by the ASST Brianza Ethics Committee.
