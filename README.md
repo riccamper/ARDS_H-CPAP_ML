@@ -27,16 +27,10 @@ develop and evaluate a Machine Learning (ML) system able to predict the failure 
 ### Methods:
 The Vimercate Hospital EMR provides demographic information, blood tests, and vital parameters of
 all hospitalizations of patients who are treated with H-CPAP and diagnosed with ARDS. This data is used to create
-a dataset of 720 records and 38 features. Different ML models such as Random Forest, XGBoost, SVM, and Logistic
-Regression with LASSO are iteratively trained in a cross-validation fashion. We also apply a classification threshold
-calibration method and a feature selection algorithm to improve predictions quality and reduce the number of features.
+a dataset of 622 records and 38 features. Different ML models such as SVM, Fully-Connected Neural-Network, XGBoost, and Random Forest are iteratively trained in a cross-validation fashion. We also apply a feature selection algorithm to improve predictions quality and reduce the number of features.
 
 ### Results and Conclusions:
-The Random Forest and XGBoost models proved to be the most effective. They
-achieved final accuracies of 93.06% and 92.13% respectively. In terms of F1-score, the models scored 89.21% and 87.59%
-respectively. These models are trained with 13 features for Random Forest and 16 features for XGBoost. The PaO2/FiO2
-Ratio, C-Reactive Protein, and O2 Saturation resulted as the most important features, followed by Heartbeats, Respiratory
-Rate, eGFR, Creatinine, and D-Dimer, in accordance with the medical scientific literature.
+The SVM and Fully-Connected Neural-Network models proved to be the most effective, achieving final accuracies of 95.19% and 94.65%, respectively. In terms of F1-score, the models scored 88.61% and 87.18%. Additionally, the SVM and XGBoost models perform well with a reduced number of features (23 and 13, respectively). The PaO2/FiO2 Ratio, C-Reactive Protein, and O2 Saturation resulted as the most important features, followed by Heartbeats, WBCs, and D-Dimer, in accordance with the clinical scientific literature.
 
 <br>
 
