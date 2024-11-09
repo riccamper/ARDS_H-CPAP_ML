@@ -14,23 +14,22 @@ Email addresses: riccardo.campi@mail.polimi.it (Riccardo Campi), antonio.desanti
 
 ## Abstract
 ### Background and Objective:
-Helmet-Continuous Positive Airway Pressure (H-CPAP) is a non-invasive respiratory
-support that is used for the treatment of Acute Respiratory Distress Syndrome (ARDS), a severe medical condition
-diagnosed when symptoms like profound hypoxemia, pulmonary opacities on radiography, or unexplained respiratory
-failure are present. It can be classified as mild, moderate or severe. H-CPAP therapy is recommended as the initial
-treatment approach for mild ARDS. Even though the efficacy of H-CPAP in managing patients with moderate-to-severe
-hypoxemia remains unclear, its use has increased for these cases in response to the emergence of the COVID-19 Pandemic.
+Helmet-Continuous Positive Airway Pressure (H-CPAP) is a non-invasive respiratory support that is used for the treatment of Acute Respiratory Distress Syndrome (ARDS), a severe medical condition diagnosed when symptoms like profound hypoxemia, pulmonary opacities on radiography, or unexplained respiratory failure are present.
+It can be classified as mild, moderate or severe.
+H-CPAP therapy is recommended as the initial treatment approach for mild ARDS.
+Even though the efficacy of H-CPAP in managing patients with moderate-to-severe hypoxemia remains unclear, its use has increased for these cases in response to the emergence of the COVID-19 Pandemic.
 
-Using the electronic medical records (EMR) from the Pulmonology Department of Vimercate Hospital, in this study we
-develop and evaluate a Machine Learning (ML) system able to predict the failure of H-CPAP therapy on ARDS patients.
+Using the electronic medical records (EMR) from the Pulmonology Department of Vimercate Hospital, in this study we develop and evaluate a Machine Learning (ML) system able to predict the failure of H-CPAP therapy on ARDS patients.
 
 ### Methods:
-The Vimercate Hospital EMR provides demographic information, blood tests, and vital parameters of
-all hospitalizations of patients who are treated with H-CPAP and diagnosed with ARDS. This data is used to create
-a dataset of 622 records and 38 features. Different ML models such as SVM, Fully-Connected Neural-Network, XGBoost, and Random Forest are iteratively trained in a cross-validation fashion. We also apply a feature selection algorithm to improve predictions quality and reduce the number of features.
+The Vimercate Hospital EMR provides demographic information, blood tests, and vital parameters of all hospitalizations of patients who are treated with H-CPAP and diagnosed with ARDS.
+This data is used to create a dataset of 622 records and 38 features, with 70-30% split between training and test set.
+Different ML models such as Support Vector Machines (SVM), XGBoost, Neural Network, Random Forest, and Logistic Regression are iteratively trained in a cross-validation fashion.
+We also apply a feature selection algorithm to improve predictions quality and reduce the number of features.
 
 ### Results and Conclusions:
-The SVM and Fully-Connected Neural-Network models proved to be the most effective, achieving final accuracies of 95.19% and 94.65%, respectively. In terms of F1-score, the models scored 88.61% and 87.18%. Additionally, the SVM and XGBoost models perform well with a reduced number of features (23 and 13, respectively). The PaO2/FiO2 Ratio, C-Reactive Protein, and O2 Saturation resulted as the most important features, followed by Heartbeats, WBCs, and D-Dimer, in accordance with the clinical scientific literature.
+The SVM and Fully Connected Neural Network models proved to be the most effective, achieving final accuracies of 95.19% and 94.65%, respectively. In terms of F1-score, the models scored 88.61% and 87.18%, respectively. Additionally, the SVM and XGBoost models performed well with a reduced number of features (23 and 13, respectively).
+The PaO2/FiO2 Ratio, C-Reactive Protein, and O2 Saturation resulted as the most important features, followed by Heartbeats, White Blood Cells, Arterial Sodium, Ionized Calcium, Arterial Potassium, and D-Dimer, in accordance with the clinical scientific literature.
 
 <br>
 
