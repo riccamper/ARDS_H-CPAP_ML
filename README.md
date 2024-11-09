@@ -24,11 +24,11 @@ Using the electronic medical records (EMR) from the Pulmonology Department of Vi
 ### Methods:
 The Vimercate Hospital EMR provides demographic information, blood tests, and vital parameters of all hospitalizations of patients who are treated with H-CPAP and diagnosed with ARDS.
 This data is used to create a dataset of 622 records and 38 features, with 70-30% split between training and test set.
-Different ML models such as Support Vector Machines (SVM), XGBoost, Neural Network, Random Forest, and Logistic Regression are iteratively trained in a cross-validation fashion.
+Different ML models such as SVM, XGBoost, Neural Network, Random Forest, and Logistic Regression are iteratively trained in a cross-validation fashion.
 We also apply a feature selection algorithm to improve predictions quality and reduce the number of features.
 
 ### Results and Conclusions:
-The SVM and Fully Connected Neural Network models proved to be the most effective, achieving final accuracies of 95.19% and 94.65%, respectively. In terms of F1-score, the models scored 88.61% and 87.18%, respectively. Additionally, the SVM and XGBoost models performed well with a reduced number of features (23 and 13, respectively).
+The SVM and Neural Network models proved to be the most effective, achieving final accuracies of 95.19% and 94.65%, respectively. In terms of F1-score, the models scored 88.61% and 87.18%, respectively. Additionally, the SVM and XGBoost models performed well with a reduced number of features (23 and 13, respectively).
 The PaO2/FiO2 Ratio, C-Reactive Protein, and O2 Saturation resulted as the most important features, followed by Heartbeats, White Blood Cells, and D-Dimer, in accordance with the clinical scientific literature.
 
 <br>
