@@ -3,6 +3,7 @@
 
 # INIZIALIZZAZIONE
 import math
+import random
 import pandas as pd
 import numpy as np
 from prettytable import PrettyTable
@@ -54,10 +55,11 @@ def read_dataset(filename):
 def elimina_record_troppo_vecchi(dataset, par_data_ricovero='2013-03', par_cpap_ok=1):
 	print("\n* Eliminazione record troppo vecchi")
 	print("\t- record con data_ricovero <", par_data_ricovero)
-	print("\t- record con CPAP_OK ==", par_cpap_ok)
+	#print("\t- record con CPAP_OK ==", par_cpap_ok)
 	dataset_len = len(dataset)
 	print("\t- dimensione dataset:", dataset_len)
-	dataset = dataset.drop(dataset[(dataset['data_ricovero'] < par_data_ricovero) & (dataset['CPAP_OK'] == par_cpap_ok)].index)
+	#dataset = dataset.drop(dataset[(dataset['data_ricovero'] < par_data_ricovero) & (dataset['CPAP_OK'] == par_cpap_ok)].index)
+	dataset = dataset.drop(dataset[(dataset['data_ricovero'] < par_data_ricovero)].index)
 	print("\t- record eliminati:", dataset_len - len(dataset))
 	print("\t- dimensione nuovo dataset:", len(dataset))
 	return dataset
@@ -69,9 +71,15 @@ def elimina_record_feature_nullo(dataset, feature="PaO2/FiO2 Ratio", par_cpap_ok
 	print("\t- record con CPAP_OK ==", par_cpap_ok)
 	dataset_len = len(dataset)
 	print("\t- dimensione dataset:", dataset_len)
-	dataset = dataset.drop(dataset[(pd.isna(dataset[feature])) & (dataset['CPAP_OK'] == par_cpap_ok)].index)
+	#dataset = dataset.drop(dataset[(pd.isna(dataset[feature])) & (dataset['CPAP_OK'] == par_cpap_ok)].index)
+	dataset = dataset.drop(dataset[(pd.isna(dataset[feature]))].index)
 	print("\t- record eliminati:", dataset_len - len(dataset))
 	print("\t- dimensione nuovo dataset:", len(dataset))
+	return dataset
+
+# FEATURE PER RICONOSCERE QUALI SONO SENZA ABG E CLASSE POSITIVA
+def feature_no_abg_e_classe_positiva(dataset, feature="No ABG"):
+	dataset[feature] = pd.Series(0, index=dataset.index).mask(pd.isna(dataset['PaO2/FiO2 Ratio']), 1)
 	return dataset
 
 # ELIMINAZIONE RECORD
@@ -120,6 +128,30 @@ def elimina_record_non_ards_finale(dataset, parametro='PaO2/FiO2 Ratio'):
 	print("\t- record eliminati:", dataset_len - len(dataset))
 	print("\t- dimensione nuovo dataset:", len(dataset))
 	return dataset
+
+# MARKING RECORD PAZIENTE DUPLICATO
+def mark_record_paziente_duplicato(dataset, parametro="cod_individuale", keep="last"):
+	print("\n* Marking record duplicati")
+	dataset_len = len(dataset)
+	print("\t- dimensione dataset:", dataset_len)
+	#dataset = dataset.drop_duplicates(keep=keep, subset=[parametro], inplace=False)
+	dataset["Duplicato"] = dataset.duplicated(subset=parametro, keep=keep)
+	#print("\t- record eliminati:", dataset_len - len(dataset))
+	#print("\t- dimensione nuovo dataset:", len(dataset))
+	return dataset
+
+# ELIMINAZIONE RECORD PAZIENTE DUPLICATO
+def elimina_record_paziente_duplicato(features_train, features_test, labels_train, labels_test, parametro="cod_individuale", keep="first"):
+	print("\n* Eliminazione record duplicati")
+	features_train_len, features_test_len = len(features_train), len(features_test)
+	print("\t- dimensione datasets:", features_train_len, features_test_len)
+	labels_train = labels_train.drop(labels_train[(features_train["Duplicato"] == 1)].index)
+	features_train = features_train.drop(features_train[(features_train["Duplicato"] == 1)].index)
+	labels_test = labels_test.drop(labels_test[(features_test["Duplicato"] == 1)].index)
+	features_test = features_test.drop(features_test[(features_test["Duplicato"] == 1)].index)
+	print("\t- record eliminati:", features_train_len - len(features_train),  features_test_len - len(features_test))
+	print("\t- dimensione nuovi datasets:", len(features_train), len(features_test))
+	return features_train, features_test, labels_train, labels_test
 
 
 # DROP FEATURES
@@ -251,7 +283,7 @@ def plot_linear_regression(feature, arr, arr_reg, value, lab):
 	plt.figure(figsize=(5, 2))
 	plt.title(feature)
 	y, x = arr, np.arange(0, len(arr))
-	plt.plot(x, y, label='Time-sorted vector', color='#5C8A99') # Colore opposto: #A37566
+	plt.plot(x, y, label='Time-sorted vector', color='#5C8A99') # Colore opposto: #24373D
 	y2, x2 = arr_reg, np.arange(0, len(arr_reg))
 	if len(arr_reg) != 0:
 		plt.plot(len(x) - len(x2) + x2, y2, label=lab, color='red', linewidth='2')
@@ -329,9 +361,11 @@ def conto_missing_values_e_scarto_features(features, percentuale=0.4, features_t
 	features_drop_arr = []
 	features_keep_arr = []
 	to_plot = {}
+	to_not_plot = ["Duplicato", "No ABG"]
 	for feature in features.columns:
 		# TO PLOT THE FEATURES
-		to_plot[feature] = (features[feature].isnull().sum() / len(features[feature]))
+		if feature not in to_not_plot:
+			to_plot[feature] = (features[feature].isnull().sum() / len(features[feature]))
 		# CHECK
 		if features[feature].isnull().sum() / len(features[feature]) >= percentuale and feature not in features_to_keep:
 			features_drop_arr.append("%s: %.2f" % (feature, (features[feature].isnull().sum() / len(features[feature])) ) )
@@ -349,7 +383,7 @@ def conto_missing_values_e_scarto_features(features, percentuale=0.4, features_t
 		sort_values(by='Percentage of missing values', ascending=False)
 		fig, ax = plt.subplots(figsize=(6,10))  # Adjust the figure size
 		for i, val in enumerate(df['Percentage of missing values']):
-			color = '#5C8A99' if val <= percentuale else '#A37566'
+			color = '#5C8A99' if val <= percentuale else '#24373D'
 			ax.barh(df.index[i], val, color=color)  # Use barh for horizontal bars
 		plt.grid(True)
 		plt.xlim(0,0.5)  # Adjust the x-limits of the plot
@@ -360,7 +394,7 @@ def conto_missing_values_e_scarto_features(features, percentuale=0.4, features_t
 		ax.set_xticklabels(['{:,.0%}'.format(x) for x in vals])  # Set the x-tick labels
 		# Add labels for the two categories
 		low_patch = mpatches.Patch(color='#5C8A99', label='Features to keep')
-		high_patch = mpatches.Patch(color='#A37566', label='Features discarded')
+		high_patch = mpatches.Patch(color='#24373D', label='Features discarded')
 		line = mpatches.Patch(color='r', label='Threshold')
 		plt.legend(handles=[low_patch, high_patch, line])
 		plt.show()
@@ -478,6 +512,33 @@ def split_dataset_in_training_e_testing_set(features, labels, test_size=0.15, sh
 				labels_train = labels_train.append(labels_test.loc[[label_test_index]])
 				features_test = features_test.drop(feature_test_index)
 				labels_test = labels_test.drop(label_test_index)
+	print("\t- record in testing set:", len(features_train), "features,", len(labels_train), "labels")
+	print("\t- record in training set:", len(features_test), "features,", len(labels_test), "labels")
+	return features_train, features_test, labels_train, labels_test
+
+
+# SWAP NO ABG RECORDS
+def swap_no_abg_records(features_train, features_test, labels_train, labels_test):
+	print("\n* Swap record senza ABG dal test al train e viceversa")
+	count = features_test["No ABG"].value_counts()[1]
+	print("\t- record in testing set without ABG, positive class:", count)
+	for feature_test_index, label_test_index in zip(features_test.index, labels_test.index):
+		if 1 not in features_test["No ABG"].value_counts().index:
+			break
+		if features_test.loc[feature_test_index]["No ABG"] == 1 and labels_test.loc[label_test_index] == 1:
+			features_train = features_train._append(features_test.loc[[feature_test_index]], ignore_index=True)
+			labels_train = labels_train._append(labels_test.loc[[label_test_index]], ignore_index=True)
+			features_test = features_test.drop(feature_test_index)
+			labels_test = labels_test.drop(label_test_index)
+	for features_train_index, label_train_index in zip(features_train.index, labels_train.index):
+		if count == 0:
+			break
+		if features_train.loc[features_train_index, "No ABG"] == 0 and labels_train.loc[label_train_index] == 1 and random.randint(0, 1) == 0:
+			features_test = features_test._append(features_train.loc[[features_train_index]], ignore_index=True)
+			labels_test = labels_test._append(labels_train.loc[[label_train_index]], ignore_index=True)
+			features_train = features_train.drop(features_train_index)
+			labels_train = labels_train.drop(label_train_index)
+			count-=1
 	print("\t- record in testing set:", len(features_train), "features,", len(labels_train), "labels")
 	print("\t- record in training set:", len(features_test), "features,", len(labels_test), "labels")
 	return features_train, features_test, labels_train, labels_test
@@ -666,11 +727,11 @@ def plot_precision_recall_curve(accuracies, precisions, recalls, f1_scores, thre
 
 
 # CALCOLA ROC CURVE
-def calcola_roc_curve(model, features, labels):
-	fpr, tpr, thresholds = roc_curve(features, model.predict_proba(labels)[:, 1], pos_label=1)
-	auc_score = auc(fpr, tpr)
+def calcola_roc_curve(labels_true, labels_pred):
+	fpr, tpr, thresholds = roc_curve(labels_true, labels_pred, pos_label=1)
+	auc_scores = auc(fpr, tpr)
 	gmeans = np.sqrt(tpr * (1-fpr))
-	return [fpr, tpr, auc_score, gmeans, thresholds]
+	return [fpr, tpr, auc_scores, gmeans, thresholds]
 
 # CALCOLA THRESHOLD DA ROC CURVE
 def calcola_roc_curve_threshold(fpr, tpr, auc_score, gmeans, thresholds):
@@ -680,14 +741,14 @@ def calcola_roc_curve_threshold(fpr, tpr, auc_score, gmeans, thresholds):
 	return [max_gmean_index, max_gmean, max_gmean_thresh]
 
 # PLOT ROC-AUC CURVE
-def plot_roc_auc_curve(fpr, tpr, auc_score, max_gmean_index, max_gmean, max_gmean_thresh):
-	plt.figure(figsize=(5, 5))
+def plot_roc_auc_curve(fpr, tpr, auc_score, max_gmean_index, max_gmean, max_gmean_thresh, old_max_gmean_thresh=False):
+	plt.figure(figsize=(2.5, 2.5))
 	#plt.title("Receiver Operating Characteristic")
 	plt.plot([0, 1], [0, 1],'r--', label="Bisector")
 	plt.plot(fpr, tpr, 'b', label = 'AUC = %0.2f' % auc_score)
-	plt.scatter(fpr[max_gmean_index], tpr[max_gmean_index], marker='o', color='green')#, label='Best threshold = %0.2f' % max_gmean_thresh)
-	plt.xlim([0, 0.6])
-	plt.ylim([0.4, 1])
+	#plt.scatter(fpr[max_gmean_index], tpr[max_gmean_index], marker='o', color='green', label='Best threshold = %0.2f' % max_gmean_thresh)
+	plt.xlim([0, 1])
+	plt.ylim([0, 1])
 	plt.ylabel("TPR (Sensitivity)")
 	plt.xlabel("FPR (1 - Specificity)")
 	plt.legend(loc='best')
