@@ -5,7 +5,7 @@
 ## Authors
 Riccardo Campi<sup>a</sup>, Antonio De Santis<sup>a</sup>, Paolo Colombo<sup>b</sup>, Paolo Scarpazza<sup>b</sup>, Marco Masseroli<sup>a</sup>
 
-<sup>a</sup>Department of Electronics Information and Bioengineering, Politecnico di Milano, Piazza L. Da Vinci 32, Milano, MI, 20133, Italy<br>
+<sup>a</sup>Politecnico di Milano, Dipartimento di Elettronica, Informazione e Bioingegneria, Piazza Leonardo Da Vinci 32, Milano, MI, 20133, Italy<br>
 <sup>b</sup>Azienda Socio-Sanitaria Territoriale (ASST) della Brianza, Via Santi Cosma e Damiano 10, Vimercate, MB, 20871, Italy
 
 Email addresses: riccardo.campi@mail.polimi.it (Riccardo Campi), antonio.desantis@polimi.it (Antonio De Santis), paolo.colombo@asst-brianza.it (Paolo Colombo), paolo.scarpazza@asst-brianza.it (Paolo Scarpazza), marco.masseroli@polimi.it (Marco Masseroli)
